@@ -1,0 +1,30 @@
+services:
+  anchor-platform:
+    image: stellar/anchor-platform:latest
+    ports:
+      - "8080:8080"   # SEP server
+      - "8085:8085"   # Platform API
+      - "8082:8082"   # Observer/event API
+    environment:
+      - APP_LOGGING_LEVEL=INFO
+      - HOME_DOMAIN={{HOME_DOMAIN}}
+      - STELLAR_NETWORK={{NETWORK}}
+      - SEP_SERVER_ENABLED_SEPS={{ENABLED_SEPS}}
+      - ASSETS_VALUE={{ASSETS_JSON}}
+      - SEP10_SIGNING_SEED={{SEP10_SIGNING_SEED}}
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16
+    environment:
+      - POSTGRES_DB=anchor_platform
+      - POSTGRES_USER=anchor
+      - POSTGRES_PASSWORD={{DB_PASSWORD}}
+    volumes:
+      - anchor_db_data:/var/lib/postgresql/data
+
+volumes:
+  anchor_db_data:

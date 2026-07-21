@@ -1,0 +1,17 @@
+{
+  "name": "anchor-config-generator",
+  "version": "0.1.0",
+  "description": "Generates Anchor Platform docker-compose + .env config from a short Q&A",
+  "main": "generate-config.js",
+  "type": "commonjs",
+  "license": "MIT",
+  "bin": {
+    "anchor-config-gen": "./generate-config.js"
+  },
+  "scripts": {
+    "start": "node generate-config.js"
+  },
+  "dependencies": {
+    "prompts": "^2.4.2"
+  }
+}
