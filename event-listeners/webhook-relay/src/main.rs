@@ -144,9 +144,7 @@ async fn deliver_webhook(
             Err(e) => {
                 attempt += 1;
                 if attempt > max_retries {
-                    anyhow::bail!(
-                        "webhook delivery failed after {max_retries} retries: {e}"
-                    );
+                    anyhow::bail!("webhook delivery failed after {max_retries} retries: {e}");
                 }
                 tracing::warn!(
                     event_id = %event.id,
@@ -240,8 +238,7 @@ async fn main() -> Result<()> {
                 }
 
                 for event in &filtered {
-                    if let Err(e) =
-                        deliver_webhook(&client, &webhook_url, event, max_retries).await
+                    if let Err(e) = deliver_webhook(&client, &webhook_url, event, max_retries).await
                     {
                         tracing::error!(
                             event_id = %event.id,

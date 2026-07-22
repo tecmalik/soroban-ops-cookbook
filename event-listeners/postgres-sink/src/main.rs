@@ -78,12 +78,11 @@ async fn ensure_schema(pool: &sqlx::PgPool) -> Result<()> {
 /// Load the persisted ledger cursor from the sync_state table.
 /// Returns None if no cursor has been saved yet.
 async fn load_cursor(pool: &sqlx::PgPool) -> Result<Option<u64>> {
-    let row: Option<(i64,)> = sqlx::query_as(
-        "SELECT value FROM sync_state WHERE key = 'last_ledger'",
-    )
-    .fetch_optional(pool)
-    .await
-    .context("failed to load cursor")?;
+    let row: Option<(i64,)> =
+        sqlx::query_as("SELECT value FROM sync_state WHERE key = 'last_ledger'")
+            .fetch_optional(pool)
+            .await
+            .context("failed to load cursor")?;
 
     Ok(row.map(|(v,)| v as u64))
 }
@@ -152,10 +151,7 @@ async fn insert_events(pool: &sqlx::PgPool, events: &[SorobanEvent]) -> Result<(
         .bind(&event.id)
         .bind(&event.contract_id)
         .bind(event.ledger as i64)
-        .bind(
-            chrono_from_rfc3339(&event.ledger_closed_at)
-                .unwrap_or_else(|_| chrono::Utc::now()),
-        )
+        .bind(chrono_from_rfc3339(&event.ledger_closed_at).unwrap_or_else(|_| chrono::Utc::now()))
         .bind(serde_json::to_value(&event.topic)?)
         .bind(&event.value)
         .execute(pool)
@@ -275,14 +271,8 @@ async fn main() -> Result<()> {
     tracing::info!(%contract_id, %rpc_url, start_ledger, "starting event poll loop");
 
     loop {
-        match fetch_events_with_retry(
-            &client,
-            &rpc_url,
-            &contract_id,
-            start_ledger,
-            max_retries,
-        )
-        .await
+        match fetch_events_with_retry(&client, &rpc_url, &contract_id, start_ledger, max_retries)
+            .await
         {
             Ok(result) => {
                 let filtered: Vec<&SorobanEvent> = result
@@ -297,8 +287,7 @@ async fn main() -> Result<()> {
                         matched = filtered.len(),
                         "fetched events"
                     );
-                    let owned: Vec<SorobanEvent> =
-                        filtered.into_iter().cloned().collect();
+                    let owned: Vec<SorobanEvent> = filtered.into_iter().cloned().collect();
                     if let Err(e) = insert_events(&pool, &owned).await {
                         tracing::error!(error = %e, "failed to insert events");
                     }
