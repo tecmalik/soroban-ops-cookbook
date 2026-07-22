@@ -2,7 +2,7 @@
 //!
 //! Enforces: a single transaction may move at most `max_amount` of a given
 //! token. Designed to be attached as a policy on an OpenZeppelin
-//! `stellar-accounts` smart account so an AI agent (or any automated signer)
+//! `stellar-accounts` smart account so a delegated signer (or any automated workflow)
 //! can be scoped without holding the account's main key.
 //!
 //! This is intentionally simple — one limit, one token — so it's easy to

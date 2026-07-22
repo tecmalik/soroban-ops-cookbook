@@ -64,6 +64,33 @@ async function main() {
     },
   ]);
 
+  // Validate required fields.
+  if (!answers.homeDomain) {
+    console.error("Error: home domain is required.");
+    process.exit(1);
+  }
+  if (!answers.assetCode) {
+    console.error("Error: asset code is required.");
+    process.exit(1);
+  }
+  if (!answers.assetIssuer) {
+    console.error("Error: asset issuer public key is required.");
+    process.exit(1);
+  }
+  if (
+    !answers.assetIssuer.startsWith("G") ||
+    answers.assetIssuer.length !== 56
+  ) {
+    console.error(
+      "Warning: asset issuer doesn't look like a Stellar public key " +
+        "(expected G... + 56 chars). Continuing anyway — double-check before deploying."
+    );
+  }
+  if (!answers.seps || answers.seps.length === 0) {
+    console.error("Error: at least one SEP must be selected.");
+    process.exit(1);
+  }
+
   const enabledSeps = answers.seps.join(",");
   const assetsJson = JSON.stringify([
     { code: answers.assetCode, issuer: answers.assetIssuer },

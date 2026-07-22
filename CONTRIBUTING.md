@@ -6,7 +6,7 @@ project with minimal changes.
 
 ## Adding a new pattern
 
-1. Pick a folder (`agent-policies/`, `anchor-configs/`, or `event-listeners/`)
+1. Pick a folder (`account-policies/`, `anchor-configs/`, or `event-listeners/`)
    or propose a new top-level category if it's a genuinely new class of
    problem (open an issue first).
 2. Each pattern gets its own subfolder with:

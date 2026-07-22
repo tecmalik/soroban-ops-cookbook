@@ -1,0 +1,19 @@
+# Rust build artifacts
+target/
+Cargo.lock
+test_snapshots/
+
+# Node.js
+node_modules/
+anchor-configs/output/
+
+# OS files
+.DS_Store
+*.swp
+*.swo
+*~
+
+# IDE
+.idea/
+.vscode/
+*.iml
